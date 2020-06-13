@@ -8,21 +8,23 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Trivia Time</title>
   </head>
   <body>
-    <button id="startGameBtn">Start Game</button>
-    <button id="seeLeaderBoardBtn">See Directions & Leaderboard</button>
-    <h1 id="timer-slot">Time Goes Here</h1>
-    <h2>Score Goes Here</h2>
-    <br>
-    <p>Question Goes Here</p>
+    <div class="container">
+      <div class="row">
+        <button class="align-right" id="seeLeaderBoardBtn">See Directions & Leaderboard</button>
+      </div>
+      <div class="row">
+        <button id="startGameBtn">Lets Play Trivia!!!</button>
+      </div>
+    </div>
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Launch demo modal
 </button>
 
-<!-- Modal -->
+<!-- Game Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
