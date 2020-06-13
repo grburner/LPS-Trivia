@@ -17,17 +17,49 @@
     <h2>Score Goes Here</h2>
     <br>
     <p>Question Goes Here</p>
-    <ul>
-        <li>Question 1 Here</li>
-        <li>Question 2 Here</li>
-        <li>Question 3 Here</li>
-        <li>Question 4 Here</li>
-    </ul>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Question goes here</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+        <div class="row my-2">
+          <button type="button" class="btn btn-primary col-2">A</button>
+          <p id="question-field-1" class="col-10">choice text here</p>
+        </div>
+        <div class="row my-2">
+          <button type="button" class="btn btn-primary col-2">B</button>
+          <p id="question-field-2" class="col-10">choice text here</p>
+        </div>
+        <div class="row my-2">
+          <button type="button" class="btn btn-primary col-2">C</button>
+          <p id="question-field-3" class="col-10">choice text here</p>
+        </div>
+        <div class="row my-2">
+          <button type="button" class="btn btn-primary col-2">D</button>
+          <p id="question-field-4" class="col-10">choice text here</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     <!--Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src='js/questions.js'></script> 
     <script src='js/script.js'></script> 
   </body>
 </html>

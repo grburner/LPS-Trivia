@@ -30,6 +30,7 @@ function showLeaderBoard() {
 // click button to start game
 gameBtn.addEventListener("click", () => {
     getPlayerName()
+    getQuestions()
     let startTimeInterval = setInterval(() => {
         console.log(startTimer)
         timerSlot.innerHTML = startTimer
@@ -44,7 +45,7 @@ gameBtn.addEventListener("click", () => {
 })
 
 function getPlayerName() {
-    console.log('show playerName modal')
+    playerName = prompt("What's your name?")
 }
     // button disappears
     // 3..2..1.. countdown timer
