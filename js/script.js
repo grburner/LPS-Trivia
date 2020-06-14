@@ -66,34 +66,52 @@ function confirmCat(gameCat) {
 
 function startQuestions() {
     score = 0
-    console.log('startQuestions()')
-    setQuestion(1)
     showModal()
-    //setQuestion(1)
+    //for (var i = 0; i < questionObject.results.length; i++) {
+        setQuestion(1)
+        checkCorrect() 
+    }
+//}
+
+function checkCorrect() {
+    // document.getElementById("modal-body").addEventListener("click", () => {
+    //     console.log('click')
+    $("#questionModal").on("click", () => {
+        console.log('target')
+    })
 }
 
+/* set modal elements with question, correct and incorrect answers */
 function setQuestion(questionIndex) {
     rightAnswerNumber = Math.floor(Math.random() * 4)
+    // generates a random number to set the correct answer
     questionArray = [0,1,2,3]
-    console.log(questionArray)
+    // array of possible question indexes
     rightAnswerIndex = questionArray.indexOf(rightAnswerNumber);
+    // sets variable to the index of the right answer
     questionArray.splice(rightAnswerIndex, 1);
+    // removes the index of the right answer
 
     selectQuestionField = document.getElementById("question-text")
     selectCorrectField = document.getElementById(`question-field-${rightAnswerNumber}`)
+    selectCorrectButton = document.getElementById(`button-${rightAnswerIndex}`)
+    // select the question and correct answer elements
 
-    getQuestion = questionObject.results[questionIndex].question
-    getCorrectAnswer = questionObject.results[questionIndex].correct_answer
-    selectQuestionField.innerHTML = getQuestion
-    selectCorrectField.innerHTML = getCorrectAnswer
+    selectQuestionField.innerHTML = questionObject.results[questionIndex].question
+    selectCorrectField.innerHTML = questionObject.results[questionIndex].correct_answer
+    selectCorrectButton.dataset.istrue = "true"
+    // populate correct answer and question elements
+
     getIncorrectAnswers = questionObject.results[questionIndex].incorrect_answers
-    console.log(getIncorrectAnswers)
-    console.log(questionArray)
+    // create an array of incorrect answers 
+
     for (var i = 0; i < questionArray.length; i++) {
         document.getElementById(`question-field-${questionArray[i]}`).innerHTML = getIncorrectAnswers[i]
     }
+    // loop through the array of remaining answer indexs and set a correct answer at each 
 };
 
+/* use JQuery to toggle modal visibility */
 function showModal() {
     $("#questionModal").modal();
 };
