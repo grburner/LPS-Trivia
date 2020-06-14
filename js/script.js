@@ -12,7 +12,6 @@
 
 let gameReady = false
 let timer = 60
-let startTimer = 3
 let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
@@ -34,28 +33,19 @@ gameBtn.addEventListener("click", () => {
     let triviaCat = getCategory(playerName)
     getQuestions(triviaCat)
 
+
     let checkAJAX = setInterval(() => {
         console.log('into set interval function' + questionObject)
         if (questionObject !== undefined) {
-            setQuestion(1)
+            startQuestions()
             clearInterval(checkAJAX)
         }
     }, 1000)
+});
 
-
-
-    // let startTimeInterval = setInterval(() => {
-    //     console.log(startTimer)
-    //     timerSlot.innerHTML = startTimer
-    //     startTimer--
-
-    //     if( startTimer === 0 ) {
-    //         clearInterval(startTimeInterval)
-    //         startTimer = 3
-    //         printQuestions()
-    //     }
-    // }, 1000)
-})
+function startQuestions() {
+    score = 0
+}
 
 function getPlayerName() {
     playerName = prompt("What's your name?")
@@ -85,26 +75,10 @@ function setQuestion(questionIndex) {
     console.log(getQuestion)
     console.log(getCorrectAnswer)
     console.log(getIncorrectAnswers)
-}
+};
 
 function printQuestions() {
     for (var i = 0; i < 9; i++) {
         setQuestion(i)
-    }
-}
-    // button disappears
-    // 3..2..1.. countdown timer
-    // 60 second timer starts counting down by one second
-        // while time !== 0
-            // function nextQuestion() question & choices populate on modal
-                // bold on hover
-                // alert -> right answer 
-                    // add points to playerScore
-                // alert -> wrong answer
-                    // deduct points from playerScore
-            // function nextQuestion() 
-        // if time === 0 
-            // showScore
-            // logScore
-            // playAgain()
-            
+    };
+};
