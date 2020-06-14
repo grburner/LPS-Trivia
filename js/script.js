@@ -16,6 +16,7 @@ let startTimer = 3
 let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
+let questionObject
 // click button to see leaderboard and directions
     // modal with leaderboard and instuctions
     // any click goes back to home page
@@ -29,9 +30,20 @@ function showLeaderBoard() {
 
 // click button to start game
 gameBtn.addEventListener("click", () => {
-    getPlayerName()
-    getCategory()
-    getQuestions()
+    let playerName = getPlayerName()
+    let triviaCat = getCategory(playerName)
+    getQuestions(triviaCat)
+
+    let checkAJAX = setInterval(() => {
+        console.log('into set interval function' + questionObject)
+        if (questionObject !== undefined) {
+            setQuestion(1)
+            clearInterval(checkAJAX)
+        }
+    }, 1000)
+
+
+
     // let startTimeInterval = setInterval(() => {
     //     console.log(startTimer)
     //     timerSlot.innerHTML = startTimer
@@ -47,6 +59,7 @@ gameBtn.addEventListener("click", () => {
 
 function getPlayerName() {
     playerName = prompt("What's your name?")
+    return playerName
 }
 
 function confirmCat(gameCat) {
@@ -60,9 +73,9 @@ function confirmCat(gameCat) {
     }
 }
 
-function getCategory() {
-    gameCat = prompt("Let's play trivia! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS")
-    confirmCat(gameCat)
+function getCategory(name) {
+    gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
+    return confirmCat(gameCat)
 }
 
 function setQuestion(questionIndex) {

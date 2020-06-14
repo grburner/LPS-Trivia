@@ -1,11 +1,16 @@
-var questionObject 
-function getQuestions() {
+ 
+function getQuestions(cat) {
+    console.log(cat)
+    if (cat === "MOVIES") {
+        categorySelector = 11
+    } else if (cat === "MUSIC") {
+        categorySelector = 12
+    } else if (cat === "COMPUTERS") {
+        categorySelector = 18
+    } else if (cat === "MATH") {
+        categorySelector = 19
+    }
     fetch(`https://opentdb.com/api.php?amount=10&category=${categorySelector}&type=multiple`)
         .then(response => response.json())
         .then(data => questionObject = data)
 }
-
-// category 11 = film
-// catrogry 12 = music
-// cateogry 18 = computers
-// cateogry 19 = math
