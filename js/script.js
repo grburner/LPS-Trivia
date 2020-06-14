@@ -16,9 +16,7 @@ let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
 let questionObject
-// click button to see leaderboard and directions
-    // modal with leaderboard and instuctions
-    // any click goes back to home page
+
 LBButton.addEventListener("click", () => {
     showLeaderBoard();
 });
@@ -35,21 +33,24 @@ gameBtn.addEventListener("click", () => {
 
 
     let checkAJAX = setInterval(() => {
-        console.log('into set interval function' + questionObject)
         if (questionObject !== undefined) {
+            console.log("into if statement")
             startQuestions()
             clearInterval(checkAJAX)
+        } else {
+            console.log("into else statement")
         }
     }, 1000)
 });
 
-function startQuestions() {
-    score = 0
-}
-
 function getPlayerName() {
     playerName = prompt("What's your name?")
     return playerName
+}
+
+function getCategory(name) {
+    gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
+    return confirmCat(gameCat)
 }
 
 function confirmCat(gameCat) {
@@ -63,22 +64,37 @@ function confirmCat(gameCat) {
     }
 }
 
-function getCategory(name) {
-    gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
-    return confirmCat(gameCat)
+function startQuestions() {
+    score = 0
+    console.log('startQuestions()')
+    setQuestion(1)
+    showModal()
+    //setQuestion(1)
 }
 
 function setQuestion(questionIndex) {
+    rightAnswerNumber = Math.floor(Math.random() * 4)
+    questionArray = [0,1,2,3]
+    console.log(questionArray)
+    rightAnswerIndex = questionArray.indexOf(rightAnswerNumber);
+    questionArray.splice(rightAnswerIndex, 1);
+
+    selectQuestionField = document.getElementById("question-text")
+    selectCorrectField = document.getElementById(`question-field-${rightAnswerNumber}`)
+
     getQuestion = questionObject.results[questionIndex].question
     getCorrectAnswer = questionObject.results[questionIndex].correct_answer
+    selectQuestionField.innerHTML = getQuestion
+    selectCorrectField.innerHTML = getCorrectAnswer
     getIncorrectAnswers = questionObject.results[questionIndex].incorrect_answers
-    console.log(getQuestion)
-    console.log(getCorrectAnswer)
     console.log(getIncorrectAnswers)
+    console.log(questionArray)
+    for (var i = 0; i < questionArray.length; i++) {
+        document.getElementById(`question-field-${questionArray[i]}`).innerHTML = getIncorrectAnswers[i]
+    }
 };
 
-function printQuestions() {
-    for (var i = 0; i < 9; i++) {
-        setQuestion(i)
-    };
+function showModal() {
+    $("#questionModal").modal();
 };
+
