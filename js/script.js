@@ -67,14 +67,11 @@ function confirmCat(gameCat) {
 function startQuestions() {
     score = 0
     questionNumber = 0
-    timer = 60
+    decrement = false
     showModal()
-    if ( timer !== 0 || questionNumber < 9 ) {
-        setQuestion(questionNumber)
-        checkCorrect() 
-    } else {
-        endGame(score)
-    }
+    setQuestion(questionNumber)
+    startTimer(timer)
+    checkCorrect() 
 }
 
 function checkCorrect() {
@@ -102,7 +99,7 @@ function questionCorrect() {
 function questionIncorrect() {
     console.log('questionIncorrect function')
     questionNumber++
-    timer -= 5
+    setDecrement()
     console.log(`${score} + ${timer} + ${questionNumber}`)
     if ( timer !== 0 && questionNumber < 9 ) {
         setQuestion(questionNumber)
@@ -111,9 +108,25 @@ function questionIncorrect() {
     }
 }
 
-function endGame() {
-    console.log( 'endGame function ' + score )
+function setDecrement() {
+    decrement = true
 }
+
+function startTimer(time) {
+    setInterval(function() { 
+        if (decrement) {
+            console.log(time)
+            time -= 5
+            decrement = false
+        } else
+            console.log(time); 
+            time = time - 1
+    }, 1000);
+}
+
+function endGame() {
+    console.log( 'endGame function ' + score );
+};
 
 /* set modal elements with question, correct and incorrect answers */
 function setQuestion(questionIndex) {
@@ -121,14 +134,12 @@ function setQuestion(questionIndex) {
     // generates a random number to set the correct answer
     questionArray = [0,1,2,3]
     // array of possible question indexes
-    rightAnswerIndex = questionArray.indexOf(rightAnswerNumber);
-    // sets variable to the index of the right answer
-    questionArray.splice(rightAnswerIndex, 1);
+    questionArray.splice(rightAnswerNumber, 1);
     // removes the index of the right answer
 
     selectQuestionField = document.getElementById("question-text")
     selectCorrectField = document.getElementById(`question-field-${rightAnswerNumber}`)
-    selectCorrectButton = document.getElementById(`button-${rightAnswerIndex}`)
+    selectCorrectButton = document.getElementById(`button-${rightAnswerNumber}`)
     // select the question and correct answer elements
 
     selectQuestionField.innerHTML = questionObject.results[questionIndex].question
@@ -141,6 +152,7 @@ function setQuestion(questionIndex) {
 
     for (var i = 0; i < questionArray.length; i++) {
         document.getElementById(`question-field-${questionArray[i]}`).innerHTML = getIncorrectAnswers[i]
+        document.getElementById(`button-${questionArray[i]}`).dataset.istrue = "false"
     }
     // loop through the array of remaining answer indexs and set a correct answer at each 
 };
