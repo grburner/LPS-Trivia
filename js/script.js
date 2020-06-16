@@ -69,11 +69,12 @@ function startQuestions() {
     questionNumber = 0
     timer = 60
     showModal()
-    // do {
+    if ( timer !== 0 || questionNumber < 9 ) {
         setQuestion(questionNumber)
         checkCorrect() 
-    // } while ( timer !== 0 || questionNumber < 10 )
-    endGame(score)
+    } else {
+        endGame(score)
+    }
 }
 
 function checkCorrect() {
@@ -90,14 +91,24 @@ function questionCorrect() {
     console.log('questionCorrect function')
     score += 10
     questionNumber++
-    setQuestion(questionNumber)
+    console.log(`${score} + ${timer} + ${questionNumber}`)
+    if ( timer !== 0 && questionNumber < 9 ) {
+        setQuestion(questionNumber)
+    } else {
+        endGame(score)
+    }
 }
 
 function questionIncorrect() {
     console.log('questionIncorrect function')
     questionNumber++
     timer -= 5
-    setQuestion(questionNumber)
+    console.log(`${score} + ${timer} + ${questionNumber}`)
+    if ( timer !== 0 && questionNumber < 9 ) {
+        setQuestion(questionNumber)
+    } else {
+        endGame(score)
+    }
 }
 
 function endGame() {
