@@ -1,21 +1,14 @@
-// GIVEN I am taking a code quiz
-// WHEN I click the start button
-// THEN a timer starts and I am presented with a question
-// WHEN I answer a question
-// THEN I am presented with another question
-// WHEN I answer a question incorrectly
-// THEN time is subtracted from the clock
-// WHEN all questions are answered or the timer reaches 0
-// THEN the game is over
-// WHEN the game is over
-// THEN I can save my initials and score
+// WHEN the game is over * 
+// THEN I can save my initials and score 
 
 let gameReady = false
-let timer = 60
+let timer = 10
 let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
 let questionObject
+
+/*----- LEADERBOARD FUNCTIONS -----*/
 
 LBButton.addEventListener("click", () => {
     showLeaderBoard();
@@ -25,32 +18,46 @@ function showLeaderBoard() {
     console.log("showLeaderBoard called")
 }
 
-// click button to start game
+/*----- GAME FUNCTIONS -----*/
 gameBtn.addEventListener("click", () => {
-    let playerName = getPlayerName()
-    let triviaCat = getCategory(playerName)
-    getQuestions(triviaCat)
-
-
-    let checkAJAX = setInterval(() => {
-        if (questionObject !== undefined) {
-            console.log("into if statement")
-            startQuestions()
-            clearInterval(checkAJAX)
-        } else {
-            console.log("into else statement")
-        }
-    }, 1000)
+    getPlayerName(getCategory)
 });
+    //let playerName = getPlayerName()
+   // playerName = getPlayerName()
+    //getQuestions(triviaCat)
+// event listener to trigger getPlayerName, getCategory
+//  passes category into getQuestions FETCH function
+
+
+//     let checkAJAX = setInterval(() => {
+//         if (questionObject !== undefined) {
+//             console.log("into if statement")
+//             startQuestions()
+//             clearInterval(checkAJAX)
+//         } else {
+//             console.log("into else statement")
+//         }
+//     }, 1000)
+// });
 
 function getPlayerName() {
-    playerName = prompt("What's your name?")
-    return playerName
-}
+    document.getElementById("name-row").classList.remove("d-none");
+    $(document).ready(() => {
+        $("#name-confirm").click((e) => {
+          e.preventDefault();
+          var name = $("#name-input").val();
+          getCategory(name)
+        });
+    });
+};
 
 function getCategory(name) {
     gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
-    return confirmCat(gameCat)
+    var catConfirm = confirmCat(gameCat)
+    if ( catConfirm ) {
+        return catConfirm
+    }
+    getCategory()
 }
 
 function confirmCat(gameCat) {
@@ -58,11 +65,8 @@ function confirmCat(gameCat) {
     if (acceptableCategories.includes( gameCat )) {
         console.log(gameCat)
         return gameCat
-    } else {
-        console.log('back to get category')
-        getCategory()
-    }
-}
+    };
+};
 
 function startQuestions() {
     score = 0
@@ -91,8 +95,6 @@ function questionCorrect() {
     console.log(`${score} + ${timer} + ${questionNumber}`)
     if ( timer !== 0 && questionNumber < 9 ) {
         setQuestion(questionNumber)
-    } else {
-        endGame(score)
     }
 }
 
@@ -103,8 +105,6 @@ function questionIncorrect() {
     console.log(`${score} + ${timer} + ${questionNumber}`)
     if ( timer !== 0 && questionNumber < 9 ) {
         setQuestion(questionNumber)
-    } else {
-        endGame(score)
     }
 }
 
@@ -113,18 +113,24 @@ function setDecrement() {
 }
 
 function startTimer(time) {
-    setInterval(function() { 
+    var myTimeStep = setInterval(function() { 
         if (decrement) {
             console.log(time)
             time -= 5
             decrement = false
-        } else
+        } else if ( time <= 0 || questionNumber === 9 ) {
+            clearInterval(myTimeStep)
+            endGame(score)
+            // get time remaining variable out of function and add it to score?
+        } else {
             console.log(time); 
             time = time - 1
+        };
     }, 1000);
 }
 
-function endGame() {
+function endGame(score) {
+    console.log(startTimer)
     console.log( 'endGame function ' + score );
 };
 

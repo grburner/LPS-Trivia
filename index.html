@@ -11,18 +11,31 @@
     <title>Trivia Time</title>
   </head>
   <body>
-    <div class="container">
-      <div class="row">
-        <button class="align-right" id="seeLeaderBoardBtn">See Directions & Leaderboard</button>
-      </div>
-      <div class="row">
-        <button id="startGameBtn">Lets Play Trivia!!!</button>
-      </div>
-    </div>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal">
-  Launch demo modal
-</button>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Trivia Du Jour</a>
+  <button type="button" class="btn btn-outline-info" id="seeLeaderBoardBtn">Leaderboard</button>
+</nav>
+<div class="container">
+  <div class="row justify-content-center py-5">
+    <h1 id="startGameBtn">Click Me To Play</h1>
+  </div>
+  <div class="row d-none" id="name-row">
+    <div class="col-9">
+      <input class="form-control" id="name-input" placeholder="Put that name here...">
+    </div>
+    <div class="col-3">
+      <button id="name-confirm" type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+    </div>
+  </div>
+  <div class="row justify-content-center d-none">
+    <button id="selector-music" type="button" class="btn btn-secondary btn-lg btn-block">MUSIC</button>
+    <button id="selector-movies" type="button" class="btn btn-primary btn-lg btn-block">MOVIES</button>
+    <button id="selector-computers" type="button" class="btn btn-primary btn-lg btn-block">COMPUTERS</button>
+    <button id="selector-math" type="button" class="btn btn-secondary btn-lg btn-block">MATH</button>
+  </div>
+</div>
 
 <!-- Game Modal -->
 <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="questionModalLabel" aria-hidden="true">
