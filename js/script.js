@@ -66,10 +66,14 @@ function confirmCat(gameCat) {
 
 function startQuestions() {
     score = 0
+    questionNumber = 0
+    timer = 60
     showModal()
-    //for (var i = 0; i < questionObject.results.length; i++) {
-        setQuestion(1)
+    // do {
+        setQuestion(questionNumber)
         checkCorrect() 
+    // } while ( timer !== 0 || questionNumber < 10 )
+    endGame(score)
 }
 
 function checkCorrect() {
@@ -85,10 +89,19 @@ function checkCorrect() {
 function questionCorrect() {
     console.log('questionCorrect function')
     score += 10
+    questionNumber++
+    setQuestion(questionNumber)
 }
 
 function questionIncorrect() {
     console.log('questionIncorrect function')
+    questionNumber++
+    timer -= 5
+    setQuestion(questionNumber)
+}
+
+function endGame() {
+    console.log( 'endGame function ' + score )
 }
 
 /* set modal elements with question, correct and incorrect answers */
