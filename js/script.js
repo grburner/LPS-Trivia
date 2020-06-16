@@ -70,15 +70,25 @@ function startQuestions() {
     //for (var i = 0; i < questionObject.results.length; i++) {
         setQuestion(1)
         checkCorrect() 
-    }
-//}
+}
 
 function checkCorrect() {
-    // document.getElementById("modal-body").addEventListener("click", () => {
-    //     console.log('click')
-    $("#questionModal").on("click", () => {
-        console.log('target')
+    $("#questionModal").on("click", (event) => {
+        if ( event.target.getAttribute("data-istrue") === "true" ) {
+            questionCorrect()
+        } else {
+            questionIncorrect()
+        }
     })
+}
+
+function questionCorrect() {
+    console.log('questionCorrect function')
+    score += 10
+}
+
+function questionIncorrect() {
+    console.log('questionIncorrect function')
 }
 
 /* set modal elements with question, correct and incorrect answers */
