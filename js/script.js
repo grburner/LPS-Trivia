@@ -7,6 +7,7 @@ let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
 let questionObject
+let name
 
 /*----- LEADERBOARD FUNCTIONS -----*/
 
@@ -29,7 +30,7 @@ function getPlayerName() {
     $(document).ready(() => {
         $("#name-confirm").click((e) => {
             e.preventDefault();
-            var name = $("#name-input").val();
+            name = $("#name-input").val();
             nameRowSelector.classList.add("d-none")
             getCategory(name)
         });
@@ -109,7 +110,7 @@ function startTimer(time) {
             decrement = false
         } else if ( time <= 0 || questionNumber === 9 ) {
             clearInterval(myTimeStep)
-            endGame(score)
+            endGame(score, name)
             // get time remaining variable out of function and add it to score?
         } else {
             console.log(time); 
@@ -117,11 +118,6 @@ function startTimer(time) {
         };
     }, 1000);
 }
-
-function endGame(score) {
-    console.log(startTimer)
-    console.log( 'endGame function ' + score );
-};
 
 /* set modal elements with question, correct and incorrect answers */
 function setQuestion(questionIndex) {
@@ -157,3 +153,7 @@ function showModal() {
     $("#questionModal").modal();
 };
 
+function endGame(score, name) {
+    console.log( 'endGame function - score:' + score + ' name: ' + name);
+    localStorage.setItem(name, score)
+};
