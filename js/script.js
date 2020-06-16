@@ -74,8 +74,11 @@ function questionCorrect() {
     score += 10
     questionNumber++
     console.log(`${score} + ${timer} + ${questionNumber}`)
-    if ( timer !== 0 && questionNumber < 9 ) {
+    if ( timer <= 0 || questionNumber === 9 ) {
+        console.log('into if statement C')
         setQuestion(questionNumber)
+    } else {
+        endGame(score, name)
     }
 }
 
@@ -84,8 +87,11 @@ function questionIncorrect() {
     questionNumber++
     setDecrement()
     console.log(`${score} + ${timer} + ${questionNumber}`)
-    if ( timer !== 0 && questionNumber < 9 ) {
+    if ( timer <= 0 || questionNumber === 9 ) {
+        console.log('into if statement I')
         setQuestion(questionNumber)
+    } else {
+        endGame(score, name)
     }
 }
 
@@ -108,9 +114,9 @@ function startTimer(time) {
             console.log(time)
             time -= 5
             decrement = false
-        } else if ( time <= 0 || questionNumber === 9 ) {
+        } else if ( timer <= 0 || questionNumber === 9 ) {
             clearInterval(myTimeStep)
-            endGame(score, name)
+            //endGame(score, name)
             // get time remaining variable out of function and add it to score?
         } else {
             console.log(time); 
