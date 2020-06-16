@@ -56,18 +56,15 @@ function getPlayerName() {
 function getCategory(name) {
     categoryRowSelector = document.getElementById("category-div");
     categoryRowSelector.classList.remove("d-none");
+    //gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
+    //add this working above the cards
     categoryRowSelector.addEventListener("click", (event) => {
         triviaCat = event.target.getAttribute("data-apiID")
         getQuestions(triviaCat)
-    })
-    //gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
-    //add this working above the cards
-    // var catConfirm = confirmCat(gameCat)
-    // if ( catConfirm ) {
-    //     return catConfirm
-    }
+    });
+};
 
-function startQuestions() {
+function startQuestions(obj) {
     score = 0
     questionNumber = 0
     decrement = false
@@ -105,6 +102,15 @@ function questionIncorrect() {
     if ( timer !== 0 && questionNumber < 9 ) {
         setQuestion(questionNumber)
     }
+}
+
+function getQuestions(cat, startQuestions) {
+    console.log(cat)
+    fetch(`https://opentdb.com/api.php?amount=10&category=${cat}&type=multiple`)
+        .then(response => response.json())
+        .then(data => questionObject = data)
+        .then(obj => this.startQuestions(obj))
+        /// ??? why do I need 'this' here
 }
 
 function setDecrement() {
