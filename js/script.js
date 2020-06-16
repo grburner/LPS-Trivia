@@ -41,32 +41,31 @@ gameBtn.addEventListener("click", () => {
 // });
 
 function getPlayerName() {
-    document.getElementById("name-row").classList.remove("d-none");
+    nameRowSelector = document.getElementById("name-row");
+    nameRowSelector.classList.remove("d-none");
     $(document).ready(() => {
         $("#name-confirm").click((e) => {
-          e.preventDefault();
-          var name = $("#name-input").val();
-          getCategory(name)
+            e.preventDefault();
+            var name = $("#name-input").val();
+            nameRowSelector.classList.add("d-none")
+            getCategory(name)
         });
     });
 };
 
 function getCategory(name) {
-    gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
-    var catConfirm = confirmCat(gameCat)
-    if ( catConfirm ) {
-        return catConfirm
+    categoryRowSelector = document.getElementById("category-div");
+    categoryRowSelector.classList.remove("d-none");
+    categoryRowSelector.addEventListener("click", (event) => {
+        triviaCat = event.target.getAttribute("data-apiID")
+        getQuestions(triviaCat)
+    })
+    //gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
+    //add this working above the cards
+    // var catConfirm = confirmCat(gameCat)
+    // if ( catConfirm ) {
+    //     return catConfirm
     }
-    getCategory()
-}
-
-function confirmCat(gameCat) {
-    let acceptableCategories = ['MOVIES', 'FILM', "MATH", "COMPUTERS"]
-    if (acceptableCategories.includes( gameCat )) {
-        console.log(gameCat)
-        return gameCat
-    };
-};
 
 function startQuestions() {
     score = 0
