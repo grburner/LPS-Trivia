@@ -2,7 +2,7 @@
 // THEN I can save my initials and score 
 
 let gameReady = false
-let timer = 10
+let timer = 60
 let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
@@ -22,23 +22,6 @@ function showLeaderBoard() {
 gameBtn.addEventListener("click", () => {
     getPlayerName(getCategory)
 });
-    //let playerName = getPlayerName()
-   // playerName = getPlayerName()
-    //getQuestions(triviaCat)
-// event listener to trigger getPlayerName, getCategory
-//  passes category into getQuestions FETCH function
-
-
-//     let checkAJAX = setInterval(() => {
-//         if (questionObject !== undefined) {
-//             console.log("into if statement")
-//             startQuestions()
-//             clearInterval(checkAJAX)
-//         } else {
-//             console.log("into else statement")
-//         }
-//     }, 1000)
-// });
 
 function getPlayerName() {
     nameRowSelector = document.getElementById("name-row");
@@ -56,8 +39,9 @@ function getPlayerName() {
 function getCategory(name) {
     categoryRowSelector = document.getElementById("category-div");
     categoryRowSelector.classList.remove("d-none");
-    //gameCat = prompt(`Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`)
-    //add this working above the cards
+    var playerNode = document.createElement("h3");
+    playerNode.innerHTML = `Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`
+    categoryRowSelector.insertBefore(playerNode, categoryRowSelector.firstChild);
     categoryRowSelector.addEventListener("click", (event) => {
         triviaCat = event.target.getAttribute("data-apiID")
         getQuestions(triviaCat)
