@@ -2,7 +2,7 @@
 // THEN I can save my initials and score 
 
 let gameReady = false
-let timer = 60
+let timer = 10
 let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
@@ -19,11 +19,14 @@ function showLeaderBoard() {
     console.log("showLeaderBoard called")
 }
 
-/*----- GAME FUNCTIONS -----*/
+/*----- GET PLAYER NAME FUNCTIONS -----*/
+
+// click event listener to show the name bar
 gameBtn.addEventListener("click", () => {
     getPlayerName(getCategory)
 });
 
+// show name bar, store input under name variable
 function getPlayerName() {
     nameRowSelector = document.getElementById("name-row");
     nameRowSelector.classList.remove("d-none");
@@ -37,6 +40,7 @@ function getPlayerName() {
     });
 };
 
+// show catergory list, save triviaCat variable and send to getQuestions function
 function getCategory(name) {
     categoryRowSelector = document.getElementById("category-div");
     categoryRowSelector.classList.remove("d-none");
@@ -49,6 +53,21 @@ function getCategory(name) {
     });
 };
 
+// FETCH function to get response array 
+//  -> THEN class startQuestions function by passing in object
+function getQuestions(cat, startQuestions) {
+    console.log(cat)
+    fetch(`https://opentdb.com/api.php?amount=11&category=${cat}&type=multiple`)
+        .then(response => response.json())
+        .then(data => questionObject = data)
+        .then(obj => this.startQuestions(obj))
+        /// ??? why do I need 'this' here
+}
+
+/*----- GAMEPLAY FUNCTIONS -----*/
+
+// set score, question number, and decrement to false
+//  -> showModal with questions, call setQuestion, call startTimer, call checkCorrect()
 function startQuestions(obj) {
     score = 0
     questionNumber = 0
@@ -59,64 +78,12 @@ function startQuestions(obj) {
     checkCorrect() 
 }
 
-function checkCorrect() {
-    $("#questionModal").on("click", (event) => {
-        if ( event.target.getAttribute("data-istrue") === "true" ) {
-            questionCorrect()
-        } else {
-            questionIncorrect()
-        }
-    })
-}
+// use JQuery to toggle modal visibility
+function showModal() {
+    $("#questionModal").modal();
+};
 
-function questionCorrect() {
-    score += 10
-    questionNumber++
-    console.log(`Correct: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
-    if ( timer >= 0 || questionNumber > 10 ) {
-        setQuestion(questionNumber)
-    }
-}
-
-function questionIncorrect() {
-    questionNumber++
-    setDecrement()
-    console.log(`InCorrect: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
-    if ( timer >= 0 || questionNumber > 10 ) {
-        setQuestion(questionNumber)
-    }
-}
-
-function getQuestions(cat, startQuestions) {
-    console.log(cat)
-    fetch(`https://opentdb.com/api.php?amount=11&category=${cat}&type=multiple`)
-        .then(response => response.json())
-        .then(data => questionObject = data)
-        .then(obj => this.startQuestions(obj))
-        /// ??? why do I need 'this' here
-}
-
-function setDecrement() {
-    decrement = true
-}
-
-function startTimer(time) {
-    var myTimeStep = setInterval(function() { 
-        if (decrement) {
-            timer -= 5
-            decrement = false
-        } else if ( timer <= 0 || questionNumber === 10 ) {
-            clearInterval(myTimeStep)
-            endGame(score, name)
-            // get time remaining variable out of function and add it to score?
-        } else {
-            console.log(timer); 
-            timer = timer - 1
-        };
-    }, 1000);
-}
-
-/* set modal elements with question, correct and incorrect answers */
+// set modal elements with question, correct and incorrect answers
 function setQuestion(questionIndex) {
     rightAnswerNumber = Math.floor(Math.random() * 4)
     // generates a random number to set the correct answer
@@ -145,12 +112,65 @@ function setQuestion(questionIndex) {
     // loop through the array of remaining answer indexs and set a correct answer at each 
 };
 
-/* use JQuery to toggle modal visibility */
-function showModal() {
-    $("#questionModal").modal();
-};
+// starts the one second timer
+//  -> reads decrement to determine if question was incorrect, if True, deduct 5seconds then reset to false
+//  -> calls endGame function if timer is <= 0 or questionNumber === 10
+function startTimer() {
+    var myTimeStep = setInterval(function() { 
+        if (decrement) {
+            timer -= 5
+            decrement = false
+        } else if ( timer <= 0 || questionNumber === 10 ) {
+            clearInterval(myTimeStep)
+            endGame(name, score)
+            // get time remaining variable out of function and add it to score?
+        } else {
+            console.log(timer); 
+            timer = timer - 1
+        };
+    }, 1000);
+}
 
-function endGame(score, name) {
-    console.log( 'endGame function - score:' + score + ' name: ' + name);
-    localStorage.setItem(name, score)
+// determins if the question is correct by looking at the data-istrue attribute and calls questionCorrect or questionIncorrect
+function checkCorrect() {
+    $("#questionModal").on("click", (event) => {
+        if ( event.target.getAttribute("data-istrue") === "true" ) {
+            questionCorrect()
+        } else {
+            questionIncorrect()
+        }
+    })
+}
+
+// adds 10 pts to score, increments questionNumber, calls setQuestion if game over conditions not met
+function questionCorrect() {
+    score += 10
+    questionNumber++
+    console.log(`Correct: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
+    if ( timer >= 0 || questionNumber > 10 ) {
+        setQuestion(questionNumber)
+    }
+}
+
+// sets setDecrement to true, increments question number, calls setQuestion if game over conditions not met
+function questionIncorrect() {
+    questionNumber++
+    setDecrement()
+    console.log(`InCorrect: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
+    if ( timer >= 0 || questionNumber > 10 ) {
+        setQuestion(questionNumber)
+    }
+}
+
+// set decrement to true, used in questionIncorrect function to decrement 5seconds
+function setDecrement() {
+    decrement = true
+}
+
+// function to end game and store name and score to localStorage
+function endGame(name, score) {
+    var oldScores = JSON.parse(localStorage.getItem('scoresArray')) || [];
+    var newScore = {'name': name, 'score': score};
+    oldScores.push(newScore);
+    localStorage.setItem('scoresArray', JSON.stringify(oldScores))
 };
