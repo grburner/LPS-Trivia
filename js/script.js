@@ -70,34 +70,26 @@ function checkCorrect() {
 }
 
 function questionCorrect() {
-    console.log('questionCorrect function')
     score += 10
     questionNumber++
-    console.log(`${score} + ${timer} + ${questionNumber}`)
-    if ( timer <= 0 || questionNumber === 9 ) {
-        console.log('into if statement C')
+    console.log(`Correct: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
+    if ( timer >= 0 || questionNumber > 10 ) {
         setQuestion(questionNumber)
-    } else {
-        endGame(score, name)
     }
 }
 
 function questionIncorrect() {
-    console.log('questionIncorrect function')
     questionNumber++
     setDecrement()
-    console.log(`${score} + ${timer} + ${questionNumber}`)
-    if ( timer <= 0 || questionNumber === 9 ) {
-        console.log('into if statement I')
+    console.log(`InCorrect: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
+    if ( timer >= 0 || questionNumber > 10 ) {
         setQuestion(questionNumber)
-    } else {
-        endGame(score, name)
     }
 }
 
 function getQuestions(cat, startQuestions) {
     console.log(cat)
-    fetch(`https://opentdb.com/api.php?amount=10&category=${cat}&type=multiple`)
+    fetch(`https://opentdb.com/api.php?amount=11&category=${cat}&type=multiple`)
         .then(response => response.json())
         .then(data => questionObject = data)
         .then(obj => this.startQuestions(obj))
@@ -111,16 +103,15 @@ function setDecrement() {
 function startTimer(time) {
     var myTimeStep = setInterval(function() { 
         if (decrement) {
-            console.log(time)
-            time -= 5
+            timer -= 5
             decrement = false
-        } else if ( timer <= 0 || questionNumber === 9 ) {
+        } else if ( timer <= 0 || questionNumber === 10 ) {
             clearInterval(myTimeStep)
-            //endGame(score, name)
+            endGame(score, name)
             // get time remaining variable out of function and add it to score?
         } else {
-            console.log(time); 
-            time = time - 1
+            console.log(timer); 
+            timer = timer - 1
         };
     }, 1000);
 }
