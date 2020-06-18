@@ -28,6 +28,7 @@ function showLeaderBoard() {
 // click event listener to show the name bar
 gameBtn.addEventListener("click", () => {
     getPlayerName(getCategory)
+    gameBtn.classList.add("d-none")
 });
 
 // show name bar, store input under name variable
@@ -219,7 +220,7 @@ function endGamePrompt() {
     showModal()
     endGameRow.classList.remove("d-none")
     categoryRowSelector.classList.add("d-none");
-    endGameText.innerHTML = `Congrats ${name}, you made it! Do you want to:`
+    endGameText.innerHTML = `Congrats ${name}, you made it - ${score} whole points! Do you want to:`
     endGameRow.addEventListener("click", (event) => {
         if ( event.target.id === "play-again-btn" ) {
             getPlayerName(getCategory)
