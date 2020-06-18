@@ -223,11 +223,19 @@ function endGamePrompt() {
     endGameRow.addEventListener("click", (event) => {
         if ( event.target.id === "play-again-btn" ) {
             getPlayerName(getCategory)
+            resetScoreSection()
         } else if ( event.target.id === "see-scores-btn" ) {
             console.log(`show scores`)
         }
     });
     showHighScores()
+};
+
+function resetScoreSection() {
+    scoreSection.classList.add("d-none")
+    while (scoreSection.firstChild) {
+        scoreSection.removeChild(scoreSection.lastChild);
+    };
 };
 
 function showHighScores() {
