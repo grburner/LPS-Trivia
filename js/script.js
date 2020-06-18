@@ -61,6 +61,7 @@ function setPlayerName () {
 function getCategory(name) {
     categoryRowSelector = document.getElementById("category-div");
     categoryRowSelector.classList.remove("d-none");
+    playerNode.classList.add("lobster")
     playerNode.innerHTML = `Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`
     categoryRowSelector.insertBefore(playerNode, categoryRowSelector.firstChild);
     $(document).ready(() => {
