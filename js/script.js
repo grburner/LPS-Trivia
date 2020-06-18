@@ -10,6 +10,7 @@ let seeScoresBtn = document.getElementById("see-scores-btn")
 let playerNode = document.createElement("h3")
 let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
+let timeRemaining = document.getElementById("time-remaining")
 
 /*----- LEADERBOARD FUNCTIONS -----*/
 
@@ -148,6 +149,7 @@ function startTimer() {
     var myTimeStep = setInterval(function() { 
         if (decrement) {
             time -= 5
+            timeRemaining.innerHTML = time
             decrement = false
         } else if ( time <= 0 || questionNumber === 10 ) {
             console.log('time: ' + time + ' questionNumber: ' + questionNumber)
@@ -156,6 +158,7 @@ function startTimer() {
         } else {
             console.log(time); 
             time = time - 1
+            timeRemaining.innerHTML = time
         };
     }, 1000);
 }
@@ -222,15 +225,22 @@ function endGamePrompt() {
         } else if ( event.target.id === "see-scores-btn" ) {
             console.log(`show scores`)
         }
-    })
+    });
+    showHighScores()
+};
+
+function showHighScores() {
+    scores = JSON.parse(localStorage.getItem("scoresArray"))
+    console.log(scores)
+    sortFunc = scores.sort(function (a, b) {
+        return b.score - a.score;
+      });
+      console.log(sortFunc)
 }
 
 /* ---- ISSUES ---- */
-// made modal non clickable
-// rerun game modal
-// - congrats {name} you're in {scorerank} place
-// - replay game button
 // - show leaderboard
 // make leaderboard page
-// make enter button on modal advance
 // clear local memory
+// make clear localStorage button
+// made a correct / incorrect marker in the modal
