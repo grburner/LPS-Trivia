@@ -1,7 +1,5 @@
 let gameReady = false
-let timer = 10
-let gameBtn = document.getElementById("startGameBtn")
-let LBButton = document.getElementById("seeLeaderBoardBtn")
+let time = 10
 let categorySelector
 let questionObject
 let name
@@ -10,6 +8,8 @@ let endGameText = document.getElementById("end-game-text")
 let playAgainBtn = document.getElementById("play-again-btn")
 let seeScoresBtn = document.getElementById("see-scores-btn")
 let playerNode = document.createElement("h3")
+let gameBtn = document.getElementById("startGameBtn")
+let LBButton = document.getElementById("seeLeaderBoardBtn")
 
 /*----- LEADERBOARD FUNCTIONS -----*/
 
@@ -38,16 +38,17 @@ function getPlayerName() {
     setPlayerName()
 };
 
+// jquery to get player name from bootstrap input field ***BEING CALLED TWICE 2ND TIME THRU***
 function setPlayerName () {
     $(document).ready(() => {
         // called once here
-        $("#name-confirm").click((e) => {
+        $("#name-confirm").unbind("click");
+        $("#name-confirm").on("click", (e) => {
             // called twice here`
             e.preventDefault();
             name = $("#name-input").val();
             nameRowSelector.classList.add("d-none")
             getCategory(name)
-            console.log(setPlayerName.caller)
         });
     });
 }
@@ -59,9 +60,17 @@ function getCategory(name) {
     categoryRowSelector.classList.remove("d-none");
     playerNode.innerHTML = `Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`
     categoryRowSelector.insertBefore(playerNode, categoryRowSelector.firstChild);
-    categoryRowSelector.addEventListener("click", (event) => {
-        triviaCat = event.target.getAttribute("data-apiID")
-        getQuestions(triviaCat)
+    $(document).ready(() => {
+        $("#category-div").unbind("click");
+        $("#category-div").on("click", (e) => {
+            e.preventDefault();
+            triviaCat = event.target.getAttribute("data-apiID")
+            getQuestions(triviaCat)
+    // categoryRowSelector.removeEventListener("click", )
+    // categoryRowSelector.addEventListener("click", (event) => {
+    //     triviaCat = event.target.getAttribute("data-apiID")
+    //     getQuestions(triviaCat)
+        });
     });
 };
 
@@ -72,7 +81,6 @@ function removeElement(element) {
 // FETCH function to get response array 
 //  -> THEN class startQuestions function by passing in object
 function getQuestions(cat, startQuestions) {
-    console.log(cat)
     fetch(`https://opentdb.com/api.php?amount=11&category=${cat}&type=multiple`)
         .then(response => response.json())
         .then(data => questionObject = data)
@@ -91,7 +99,7 @@ function startQuestions(obj) {
     decrement = false
     showModal()
     setQuestion(questionNumber)
-    startTimer(timer)
+    startTimer(time)
     checkCorrect() 
 }
 
@@ -139,21 +147,22 @@ function setQuestion(questionIndex) {
 function startTimer() {
     var myTimeStep = setInterval(function() { 
         if (decrement) {
-            timer -= 5
+            time -= 5
             decrement = false
-        } else if ( timer <= 0 || questionNumber === 10 ) {
+        } else if ( time <= 0 || questionNumber === 10 ) {
+            console.log('time: ' + time + ' questionNumber: ' + questionNumber)
             clearInterval(myTimeStep)
             endGame(name, score)
-            // get time remaining variable out of function and add it to score?
         } else {
-            console.log(timer); 
-            timer = timer - 1
+            console.log(time); 
+            time = time - 1
         };
     }, 1000);
 }
 
 // determins if the question is correct by looking at the data-istrue attribute and calls questionCorrect or questionIncorrect
 function checkCorrect() {
+    $("#questionModal").unbind("click");
     $("#questionModal").on("click", (event) => {
         if ( event.target.getAttribute("data-istrue") === "true" ) {
             questionCorrect()
@@ -165,20 +174,22 @@ function checkCorrect() {
 
 // adds 10 pts to score, increments questionNumber, calls setQuestion if game over conditions not met
 function questionCorrect() {
+    console.log('caller of questionCorrect: ' + questionCorrect.caller)
     score += 10
     questionNumber++
-    console.log(`Correct: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
-    if ( timer >= 0 || questionNumber > 10 ) {
+    console.log(`Correct: score: ${score} + time: ${time} + questionNum: ${questionNumber}`)
+    if ( time >= 0 || questionNumber > 10 ) {
         setQuestion(questionNumber)
     }
 }
 
 // sets setDecrement to true, increments question number, calls setQuestion if game over conditions not met
 function questionIncorrect() {
+    console.log('caller of questionIncorrect: ' + questionIncorrect.caller)
     questionNumber++
     setDecrement()
-    console.log(`InCorrect: score: ${score} + timer: ${timer} + questionNum: ${questionNumber}`)
-    if ( timer >= 0 || questionNumber > 10 ) {
+    console.log(`InCorrect: score: ${score} + time: ${time} + questionNum: ${questionNumber}`)
+    if ( time >= 0 || questionNumber > 10 ) {
         setQuestion(questionNumber)
     }
 }
@@ -190,8 +201,11 @@ function setDecrement() {
 
 // function to end game and store name and score to localStorage
 function endGame(name, score) {
+    console.log('name: '+ name + ' score: ' + score +' timer: ' + time + ' endGame called by: ' + endGame.caller)
     var oldScores = JSON.parse(localStorage.getItem('scoresArray')) || [];
     var newScore = {'name': name, 'score': score};
+    questionNumber = 0
+    time = 10
     oldScores.push(newScore);
     localStorage.setItem('scoresArray', JSON.stringify(oldScores))
     endGamePrompt()
@@ -219,3 +233,4 @@ function endGamePrompt() {
 // - show leaderboard
 // make leaderboard page
 // make enter button on modal advance
+// clear local memory
