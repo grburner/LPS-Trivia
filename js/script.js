@@ -1,6 +1,3 @@
-// WHEN the game is over * 
-// THEN I can save my initials and score 
-
 let gameReady = false
 let timer = 10
 let gameBtn = document.getElementById("startGameBtn")
@@ -8,6 +5,11 @@ let LBButton = document.getElementById("seeLeaderBoardBtn")
 let categorySelector
 let questionObject
 let name
+let endGameRow = document.getElementById("end-game-prompt")
+let endGameText = document.getElementById("end-game-text")
+let playAgainBtn = document.getElementById("play-again-btn")
+let seeScoresBtn = document.getElementById("see-scores-btn")
+let playerNode = document.createElement("h3")
 
 /*----- LEADERBOARD FUNCTIONS -----*/
 
@@ -30,21 +32,31 @@ gameBtn.addEventListener("click", () => {
 function getPlayerName() {
     nameRowSelector = document.getElementById("name-row");
     nameRowSelector.classList.remove("d-none");
+    if ( !endGameRow.classList.contains("d-none") ) {
+        endGameRow.classList.add("d-none")
+    }
+    setPlayerName()
+};
+
+function setPlayerName () {
     $(document).ready(() => {
+        // called once here
         $("#name-confirm").click((e) => {
+            // called twice here`
             e.preventDefault();
             name = $("#name-input").val();
             nameRowSelector.classList.add("d-none")
             getCategory(name)
+            console.log(setPlayerName.caller)
         });
     });
-};
+}
+
 
 // show catergory list, save triviaCat variable and send to getQuestions function
 function getCategory(name) {
     categoryRowSelector = document.getElementById("category-div");
     categoryRowSelector.classList.remove("d-none");
-    var playerNode = document.createElement("h3");
     playerNode.innerHTML = `Let's play trivia ${name}! Pick a category by entering MOVIES, FILM, MATH or COMPUTERS`
     categoryRowSelector.insertBefore(playerNode, categoryRowSelector.firstChild);
     categoryRowSelector.addEventListener("click", (event) => {
@@ -52,6 +64,10 @@ function getCategory(name) {
         getQuestions(triviaCat)
     });
 };
+
+function removeElement(element) {
+    element.remove()
+}
 
 // FETCH function to get response array 
 //  -> THEN class startQuestions function by passing in object
@@ -62,6 +78,7 @@ function getQuestions(cat, startQuestions) {
         .then(data => questionObject = data)
         .then(obj => this.startQuestions(obj))
         /// ??? why do I need 'this' here
+    removeElement(playerNode)
 }
 
 /*----- GAMEPLAY FUNCTIONS -----*/
@@ -80,8 +97,12 @@ function startQuestions(obj) {
 
 // use JQuery to toggle modal visibility
 function showModal() {
-    $("#questionModal").modal();
+    $("#questionModal").modal('toggle');
 };
+
+// function hideModal() {
+
+// };
 
 // set modal elements with question, correct and incorrect answers
 function setQuestion(questionIndex) {
@@ -173,4 +194,28 @@ function endGame(name, score) {
     var newScore = {'name': name, 'score': score};
     oldScores.push(newScore);
     localStorage.setItem('scoresArray', JSON.stringify(oldScores))
+    endGamePrompt()
 };
+
+function endGamePrompt() {
+    showModal()
+    endGameRow.classList.remove("d-none")
+    categoryRowSelector.classList.add("d-none");
+    endGameText.innerHTML = `Congrats ${name}, you made it! Do you want to:`
+    endGameRow.addEventListener("click", (event) => {
+        if ( event.target.id === "play-again-btn" ) {
+            getPlayerName(getCategory)
+        } else if ( event.target.id === "see-scores-btn" ) {
+            console.log(`show scores`)
+        }
+    })
+}
+
+/* ---- ISSUES ---- */
+// made modal non clickable
+// rerun game modal
+// - congrats {name} you're in {scorerank} place
+// - replay game button
+// - show leaderboard
+// make leaderboard page
+// make enter button on modal advance
