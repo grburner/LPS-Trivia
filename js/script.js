@@ -11,6 +11,7 @@ let playerNode = document.createElement("h3")
 let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let timeRemaining = document.getElementById("time-remaining")
+let scoreSection = document.getElementById("score-section")
 
 /*----- LEADERBOARD FUNCTIONS -----*/
 
@@ -234,8 +235,16 @@ function showHighScores() {
     console.log(scores)
     sortFunc = scores.sort(function (a, b) {
         return b.score - a.score;
-      });
-      console.log(sortFunc)
+    });
+    scoreSection.classList.remove("d-none")
+    console.log(scoreSection)
+    for(var i = 0; i < 4; i++ ) {
+        rankArray = [1,2,3,4,5]
+        let scoreDiv = document.createElement("h5")
+        scoreDiv.innerHTML = `${rankArray[i]} - ${sortFunc[i].name}: ${sortFunc[i].score}`
+        scoreSection.appendChild(scoreDiv)
+    };
+    console.log(scoreSection)
 }
 
 /* ---- ISSUES ---- */
