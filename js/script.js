@@ -17,7 +17,7 @@ let scoreList = document.getElementById("score-list")
 /*----- LEADERBOARD FUNCTIONS -----*/
 
 LBButton.addEventListener("click", () => {
-    showLeaderBoard();
+    showHighScores()
 });
 
 function showLeaderBoard() {
@@ -30,6 +30,7 @@ function showLeaderBoard() {
 gameBtn.addEventListener("click", () => {
     getPlayerName(getCategory)
     gameBtn.classList.add("d-none")
+    scoreSection.classList.add("d-none")
 });
 
 // show name bar, store input under name variable
@@ -265,6 +266,7 @@ function showHighScores() {
     };
     console.log(scoreSection)
 }
+
 
 /* ---- ISSUES ---- */
 // clear local memory
