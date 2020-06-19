@@ -3,6 +3,7 @@ let time = 10
 let categorySelector
 let questionObject
 let name
+let scoresInView = false
 let endGameRow = document.getElementById("end-game-prompt")
 let endGameText = document.getElementById("end-game-text")
 let playAgainBtn = document.getElementById("play-again-btn")
@@ -13,11 +14,13 @@ let LBButton = document.getElementById("seeLeaderBoardBtn")
 let timeRemaining = document.getElementById("time-remaining")
 let scoreSection = document.getElementById("score-section")
 let scoreList = document.getElementById("score-list")
+let scoreText = document.getElementById("score-text")
+let correctIncorrect = document.getElementById("correct-incorrect")
 
 /*----- LEADERBOARD FUNCTIONS -----*/
 
 LBButton.addEventListener("click", () => {
-    showHighScores()
+    highScoresPop()
 });
 
 function showLeaderBoard() {
@@ -30,7 +33,7 @@ function showLeaderBoard() {
 gameBtn.addEventListener("click", () => {
     getPlayerName(getCategory)
     gameBtn.classList.add("d-none")
-    scoreSection.classList.add("d-none")
+    //scoreSection.classList.add("d-none")
 });
 
 // show name bar, store input under name variable
@@ -163,7 +166,10 @@ function startTimer() {
         } else {
             console.log(time); 
             time = time - 1
-            timeRemaining.innerHTML = time
+            if (time > -1) {
+                timeRemaining.innerHTML = time
+                // this isnt working to not show a second of negative time...
+            }
         };
     }, 1000);
 }
@@ -182,9 +188,9 @@ function checkCorrect() {
 
 // adds 10 pts to score, increments questionNumber, calls setQuestion if game over conditions not met
 function questionCorrect() {
-    console.log('caller of questionCorrect: ' + questionCorrect.caller)
     score += 10
     questionNumber++
+    correctIncorrect.innerHTML = 'Correct!'
     console.log(`Correct: score: ${score} + time: ${time} + questionNum: ${questionNumber}`)
     if ( time >= 0 || questionNumber > 10 ) {
         setQuestion(questionNumber)
@@ -193,8 +199,8 @@ function questionCorrect() {
 
 // sets setDecrement to true, increments question number, calls setQuestion if game over conditions not met
 function questionIncorrect() {
-    console.log('caller of questionIncorrect: ' + questionIncorrect.caller)
     questionNumber++
+    correctIncorrect.innerHTML = 'Nope!'
     setDecrement()
     console.log(`InCorrect: score: ${score} + time: ${time} + questionNum: ${questionNumber}`)
     if ( time >= 0 || questionNumber > 10 ) {
@@ -232,7 +238,7 @@ function endGamePrompt() {
             console.log(`show scores`)
         }
     });
-    showHighScores()
+    highScoresPop()
 };
 
 function resetScoreSection() {
@@ -242,38 +248,51 @@ function resetScoreSection() {
     };
 };
 
+function highScoresPop() {
+    if (scoresInView === false) {
+        console.log('scoresInView ' + scoresInView)
+        showHighScores()
+        scoresInView = true
+        scoreText.classList.remove("d-none")
+    } else {
+        console.log('scoresInView ' + scoresInView)
+        while (scoreList.firstChild) {
+        scoreList.removeChild(scoreList.firstChild);
+        };
+        scoresInView = false
+        scoreText.classList.add("d-none")
+    };
+};
+
 function showHighScores() {
+    console.log(showHighScores.caller)
+    scoresInView = true
+    var scoreLength
+    function lengthVar(scores) {
+        if (scores.length > 5) {
+        scoreLength = 5
+        } else {
+        scoreLength = scores.length
+        };
+    };
     scores = JSON.parse(localStorage.getItem("scoresArray"))
     console.log(scores)
     sortFunc = scores.sort(function (a, b) {
         return b.score - a.score;
     });
     scoreSection.classList.remove("d-none")
-    console.log(scoreSection)
-    function lengthVar(scores) {
-        if (scores > 5) {
-        return 5
-        } else {
-        return scores.length
-        };
-    };
-
-    for(var i = 0; i < lengthVar(scores); i++ ) {
+    lengthVar(scores)
+    for(var i = 0; i < scoreLength; i++ ) {
         rankArray = [1,2,3,4,5]
         let scoreDiv = document.createElement("h5")
         scoreDiv.innerHTML = `${rankArray[i]} - ${sortFunc[i].name}: ${sortFunc[i].score}`
         scoreList.appendChild(scoreDiv).classList.add("text-center")
     };
-    console.log(scoreSection)
 }
 
 
 /* ---- ISSUES ---- */
-// clear local memory
-// make clear localStorage button
 // made a correct / incorrect marker in the modal ***
-// connect show leaderboard button ***
-// fix leaderboard page ***
-// add background
 // fix visible number counter going into negatives ***
 // unselect answer buttons in modal ***
+// make high scores show at right time ***
