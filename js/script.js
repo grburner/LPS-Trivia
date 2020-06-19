@@ -1,5 +1,5 @@
 let gameReady = false
-let time = 10
+let time = 60
 let categorySelector
 let questionObject
 let name
@@ -234,6 +234,7 @@ function endGamePrompt() {
         if ( event.target.id === "play-again-btn" ) {
             getPlayerName(getCategory)
             resetScoreSection()
+            time = 60
         } else if ( event.target.id === "see-scores-btn" ) {
             console.log(`show scores`)
         }
