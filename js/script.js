@@ -117,10 +117,6 @@ function showModal() {
     $("#questionModal").modal('toggle');
 };
 
-// function hideModal() {
-
-// };
-
 // set modal elements with question, correct and incorrect answers
 function setQuestion(questionIndex) {
     rightAnswerNumber = Math.floor(Math.random() * 4)
@@ -153,6 +149,7 @@ function setQuestion(questionIndex) {
 // starts the one second timer
 //  -> reads decrement to determine if question was incorrect, if True, deduct 5seconds then reset to false
 //  -> calls endGame function if timer is <= 0 or questionNumber === 10
+//  -> adds the timer value to the modal
 function startTimer() {
     var myTimeStep = setInterval(function() { 
         if (decrement) {
@@ -182,9 +179,9 @@ function checkCorrect() {
             questionCorrect()
         } else {
             questionIncorrect()
-        }
-    })
-}
+        };
+    });
+};
 
 // adds 10 pts to score, increments questionNumber, calls setQuestion if game over conditions not met
 function questionCorrect() {
@@ -194,8 +191,8 @@ function questionCorrect() {
     console.log(`Correct: score: ${score} + time: ${time} + questionNum: ${questionNumber}`)
     if ( time >= 0 || questionNumber > 10 ) {
         setQuestion(questionNumber)
-    }
-}
+    };
+};
 
 // sets setDecrement to true, increments question number, calls setQuestion if game over conditions not met
 function questionIncorrect() {
@@ -205,13 +202,13 @@ function questionIncorrect() {
     console.log(`InCorrect: score: ${score} + time: ${time} + questionNum: ${questionNumber}`)
     if ( time >= 0 || questionNumber > 10 ) {
         setQuestion(questionNumber)
-    }
-}
+    };
+};
 
 // set decrement to true, used in questionIncorrect function to decrement 5seconds
 function setDecrement() {
     decrement = true
-}
+};
 
 // function to end game and store name and score to localStorage
 function endGame(name, score) {
@@ -225,6 +222,9 @@ function endGame(name, score) {
     endGamePrompt()
 };
 
+// unhides the HTML end game section
+// -> hides modal & category selector
+// -> displays eng game prompt to replay, reset time & show high scores
 function endGamePrompt() {
     showModal()
     endGameRow.classList.remove("d-none")
@@ -242,6 +242,7 @@ function endGamePrompt() {
     highScoresPop()
 };
 
+// removed children from the scoresection div to allow for a reset of high scores
 function resetScoreSection() {
     scoreSection.classList.add("d-none")
     while (scoreSection.firstChild) {
@@ -249,13 +250,15 @@ function resetScoreSection() {
     };
 };
 
+// toggels the high score list
+//  -> if scoresInView === flase then showHighScores() & set scoresInView to true
 function highScoresPop() {
     if (scoresInView === false) {
         console.log('scoresInView ' + scoresInView)
         showHighScores()
         scoresInView = true
         scoreText.classList.remove("d-none")
-    } else {
+    } else if (scoresInView === true) {
         console.log('scoresInView ' + scoresInView)
         while (scoreList.firstChild) {
         scoreList.removeChild(scoreList.firstChild);
@@ -265,6 +268,7 @@ function highScoresPop() {
     };
 };
 
+//  toggles scoresInView variable & checks the length of the stored scores array
 function showHighScores() {
     console.log(showHighScores.caller)
     scoresInView = true
@@ -276,11 +280,14 @@ function showHighScores() {
         scoreLength = scores.length
         };
     };
+
+    // sorts high scores from localStorage
     scores = JSON.parse(localStorage.getItem("scoresArray"))
     console.log(scores)
     sortFunc = scores.sort(function (a, b) {
         return b.score - a.score;
     });
+    //shows high scores depending on length of stored scores array
     scoreSection.classList.remove("d-none")
     lengthVar(scores)
     for(var i = 0; i < scoreLength; i++ ) {
