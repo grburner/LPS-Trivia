@@ -249,7 +249,15 @@ function showHighScores() {
     });
     scoreSection.classList.remove("d-none")
     console.log(scoreSection)
-    for(var i = 0; i < 5; i++ ) {
+    function lengthVar(scores) {
+        if (scores > 5) {
+        return 5
+        } else {
+        return scores.length
+        };
+    };
+
+    for(var i = 0; i < lengthVar(scores); i++ ) {
         rankArray = [1,2,3,4,5]
         let scoreDiv = document.createElement("h5")
         scoreDiv.innerHTML = `${rankArray[i]} - ${sortFunc[i].name}: ${sortFunc[i].score}`
