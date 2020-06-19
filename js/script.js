@@ -12,6 +12,7 @@ let gameBtn = document.getElementById("startGameBtn")
 let LBButton = document.getElementById("seeLeaderBoardBtn")
 let timeRemaining = document.getElementById("time-remaining")
 let scoreSection = document.getElementById("score-section")
+let scoreList = document.getElementById("score-list")
 
 /*----- LEADERBOARD FUNCTIONS -----*/
 
@@ -248,18 +249,21 @@ function showHighScores() {
     });
     scoreSection.classList.remove("d-none")
     console.log(scoreSection)
-    for(var i = 0; i < 4; i++ ) {
+    for(var i = 0; i < 5; i++ ) {
         rankArray = [1,2,3,4,5]
         let scoreDiv = document.createElement("h5")
         scoreDiv.innerHTML = `${rankArray[i]} - ${sortFunc[i].name}: ${sortFunc[i].score}`
-        scoreSection.appendChild(scoreDiv)
+        scoreList.appendChild(scoreDiv).classList.add("text-center")
     };
     console.log(scoreSection)
 }
 
 /* ---- ISSUES ---- */
-// - show leaderboard
-// make leaderboard page
 // clear local memory
 // make clear localStorage button
-// made a correct / incorrect marker in the modal
+// made a correct / incorrect marker in the modal ***
+// connect show leaderboard button ***
+// fix leaderboard page ***
+// add background
+// fix visible number counter going into negatives ***
+// unselect answer buttons in modal ***
