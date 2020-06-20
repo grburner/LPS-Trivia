@@ -90,7 +90,7 @@ function removeElement(element) {
 // FETCH function to get response array 
 //  -> THEN class startQuestions function by passing in object
 function getQuestions(cat, startQuestions) {
-    fetch(`https://opentdb.com/api.php?amount=11&category=${cat}&type=multiple`)
+    fetch(`https://opentdb.com/api.php?amount=20&category=${cat}&type=multiple`)
         .then(response => response.json())
         .then(data => questionObject = data)
         .then(obj => this.startQuestions(obj))
@@ -235,6 +235,7 @@ function endGamePrompt() {
             getPlayerName(getCategory)
             resetScoreSection()
             time = 60
+            scoresInView = false
         } else if ( event.target.id === "see-scores-btn" ) {
             console.log(`show scores`)
         }
@@ -291,6 +292,7 @@ function showHighScores() {
     scoreSection.classList.remove("d-none")
     lengthVar(scores)
     for(var i = 0; i < scoreLength; i++ ) {
+        console.log('into create div loop')
         rankArray = [1,2,3,4,5]
         let scoreDiv = document.createElement("h5")
         scoreDiv.innerHTML = `${rankArray[i]} - ${sortFunc[i].name}: ${sortFunc[i].score}`
