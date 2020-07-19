@@ -21,6 +21,8 @@ let correctIncorrect = document.getElementById("correct-incorrect")
 
 LBButton.addEventListener("click", () => {
     highScoresPop()
+    console.log(LBButton)
+    console.log(highScoresPop)
 });
 
 function showLeaderBoard() {
@@ -220,6 +222,7 @@ function endGame(name, score) {
     oldScores.push(newScore);
     localStorage.setItem('scoresArray', JSON.stringify(oldScores))
     endGamePrompt()
+    highScoresPop()
 };
 
 // unhides the HTML end game section

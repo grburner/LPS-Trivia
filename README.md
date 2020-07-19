@@ -1,8 +1,8 @@
-Trivia game:
-    select a category -> get questions from an API
-    display questions and keep score with a countdown timer
-    log high scores and show the 5 highest
-    loop back through
+This is a simple trivia game levereging the JService trivia API. Players can choose from 4 categories, are presented with 60 seconds worth of questions, and scores are saved in local storage.
+
+![screenshot]('app_screenshot.png')
+
+
 
 Bugs to still resolve:
 /* ---- ISSUES ---- */
