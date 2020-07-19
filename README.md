@@ -1,6 +1,6 @@
 This is a simple trivia game levereging the JService trivia API. Players can choose from 4 categories, are presented with 60 seconds worth of questions, and scores are saved in local storage.
 
-![screenshot]('app_screenshot.png')
+![screenshot](app_screenshot.png)
 
 
 
